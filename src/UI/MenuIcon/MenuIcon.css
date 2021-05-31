@@ -1,0 +1,38 @@
+.menuIcon {
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.line1 {
+  margin-bottom: 4px;
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--primary);
+}
+.line2 {
+  display: block;
+  width: 10px;
+  height: 2px;
+  background: var(--primary);
+  margin-bottom: 4px;
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+.menuIcon.active > .line2 {
+  width: 20px;
+}
+.line3 {
+  position: relative;
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--primary);
+}

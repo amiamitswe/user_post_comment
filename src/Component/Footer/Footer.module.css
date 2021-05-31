@@ -1,0 +1,18 @@
+.Footer {
+  width: 100%;
+  padding: 16px;
+  background-color: #fff;
+  border-top: 1px solid lightgray;
+  box-sizing: border-box;
+}
+.FooterContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (max-width: 767.98px) {
+  .FooterContainer {
+    flex-direction: column;
+  }
+}

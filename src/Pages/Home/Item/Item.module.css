@@ -1,0 +1,22 @@
+.Item {
+  border: 1px solid gray;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.Title {
+  font-size: 20px;
+  line-height: 20px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin-bottom: 10px;
+  color: #131313;
+}
+
+.Body {
+  font-size: 20px;
+  line-height: 20px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: #292727;
+}

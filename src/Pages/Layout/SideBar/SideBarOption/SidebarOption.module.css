@@ -1,0 +1,24 @@
+.SidebarOption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #484848;
+  text-transform: capitalize;
+  background-color: #fff;
+  border-radius: 4px;
+  margin-bottom: 3px;
+  transition: all 0.25s ease;
+}
+
+.SidebarOption:hover {
+  color: #fff;
+  background-color: var(--primary);
+}
+
+.SidebarOptionActive {
+  color: #fff;
+  background-color: var(--primary);
+}

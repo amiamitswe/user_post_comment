@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import Item from './Item/Item'
+import Item from '../../Component/Item/Item'
 import { baseURL } from '../../config.json'
 
 const Home = () => {
@@ -43,24 +43,17 @@ const Home = () => {
 
 
   return (
-    <>
-      <div className="row">
-        <div className="col-12">
-          <div className="brand__headLeft">
-            <div className="brand__title">
-              <h3 className='mb-3'>All Posts</h3>
-              {allPost?.slice(0, initialLoad).map(el => <Item key={el.id} title={el.title} body={el.body} />)}
-              {initialLoad >= allPost?.length ?
-                <div className="alert alert-info" role="alert">
-                  No More Data Available !!!
+    <div className="row">
+      <div className="col-12">
+        <h3 className='mb-3'>All Posts</h3>
+        {allPost?.slice(0, initialLoad).map(el => <Item key={el.id} title={el.title} body={el.body} />)}
+        {initialLoad >= allPost?.length ?
+          <div className="alert alert-info" role="alert">
+            No More Data Available !!!
               </div> :
-                <button className='btn btn-md btn-primary mt-3' onClick={updateInitialLoad}>Show More</button>}
-            </div>
-          </div>
-        </div>
+          <button className='btn btn-md btn-primary mt-3' onClick={updateInitialLoad}>Show More</button>}
       </div>
-    </>
-
+    </div>
   )
 }
 

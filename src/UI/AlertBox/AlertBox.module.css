@@ -1,0 +1,7 @@
+.Alert {
+  position: fixed !important;
+  z-index: 9999;
+  top: 8px;
+  right: 15px;
+  margin-bottom: 0 !important;
+}

@@ -10,6 +10,7 @@ function Sidebar() {
           <>
             <SidebarOption to="/home" title="Home" />
             <SidebarOption to="/post" title="Post" />
+            <SidebarOption to="/myPosts" title="My Posts" />
             <SidebarOption to="/comments" title="Comments" />
           </>
         </div>

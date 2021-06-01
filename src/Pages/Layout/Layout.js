@@ -7,6 +7,8 @@ import Post from '../Post/Post'
 import Comment from '../Comment/Comment'
 import Footer from '../../Component/Footer/Footer'
 import classes from './Layout.module.css'
+// import User from '../User/User'
+import MyPosts from '../MyPosts/MyPosts'
 
 const Layout = () => {
   return (
@@ -34,6 +36,9 @@ const Layout = () => {
                     </Route>
                     <Route path="/post">
                       <Post />
+                    </Route>
+                    <Route path="/myPosts">
+                      <MyPosts />
                     </Route>
                   </Switch>
 

@@ -6,22 +6,15 @@ const Comment = () => {
   const { dispatch, state } = useContext(store)
   console.log(data);
   return (
-    <div>
-      <div className="row">
-        <div className="col-12">
-          <div className="brand__headLeft">
-            <div className="brand__title">
-              <h3>{state.comments.name}</h3>
-              <h3>Comment {state.comments.count}</h3>
-              <button onClick={() => dispatch({ type: 'TEST', payload: 1 })} className='btn btn-sm btn-info mr-3'>Click ME 1</button>
+    <div className="row">
+      <div className="col-12">
+        <h3>{state.comments.name}</h3>
+        <h3>Comment {state.comments.count}</h3>
+        <button onClick={() => dispatch({ type: 'TEST', payload: 1 })} className='btn btn-sm btn-info mr-3'>Click ME 1</button>
 
-              <button onClick={() => dispatch({ type: 'TEST2', payload: 1 })} className='btn btn-sm btn-info'>Click ME 2</button>
-            </div>
-          </div>
-        </div>
+        <button onClick={() => dispatch({ type: 'TEST2', payload: 1 })} className='btn btn-sm btn-info'>Click ME 2</button>
       </div>
     </div>
-
   )
 }
 

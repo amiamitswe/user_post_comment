@@ -46,7 +46,7 @@ const Home = () => {
     <div className="row">
       <div className="col-12">
         <h3 className='mb-3'>All Posts</h3>
-        {allPost?.slice(0, initialLoad).map(el => <Item key={el.id} title={el.title} body={el.body} />)}
+        {allPost?.slice(0, initialLoad).map(el => <Item postId={el.id} key={el.id} title={el.title} body={el.body} />)}
         {initialLoad >= allPost?.length ?
           <div className="alert alert-info" role="alert">
             No More Data Available !!!

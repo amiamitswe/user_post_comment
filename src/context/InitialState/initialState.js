@@ -5,6 +5,11 @@ const commentInitialState = {
   }
 }
 
+const initialUser = {
+  userID: 2,
+  userName: ''
+}
+
 const initialPosts = {
   data: [],
   error: null,
@@ -22,4 +27,4 @@ const initialMyPosts = {
   editAbleData: null
 }
 
-export { commentInitialState, initialPosts, initialMyPosts }
+export { commentInitialState, initialUser, initialPosts, initialMyPosts }

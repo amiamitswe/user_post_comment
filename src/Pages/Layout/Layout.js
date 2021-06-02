@@ -9,6 +9,8 @@ import Footer from '../../Component/Footer/Footer'
 import classes from './Layout.module.css'
 // import User from '../User/User'
 import MyPosts from '../MyPosts/MyPosts'
+import PostDetails from '../PostDetails/PostDetails'
+import PageNotFound from '../PageNotFound/PageNotFound'
 
 const Layout = () => {
   return (
@@ -25,8 +27,8 @@ const Layout = () => {
 
                   <Switch>
                     <Redirect exact from="/" to="/home" />
-                    <Route path="/locale/:localeId" exact>
-                      <h1>Hello</h1>
+                    <Route path="/postDetails/:postId" exact>
+                      <PostDetails />
                     </Route>
                     <Route path="/comments">
                       <Comment />
@@ -40,6 +42,9 @@ const Layout = () => {
                     <Route path="/myPosts">
                       <MyPosts />
                     </Route>
+                    <Route>
+                      <PageNotFound />
+                    </Route>
                   </Switch>
 
 
@@ -48,7 +53,7 @@ const Layout = () => {
             </div>
           </div>
         </div>
-        <Footer title="User Post Comment" version="1.0.0" />
+        <Footer title="User Post Comment By Amit" version="1.0.0" />
       </div>
     </>
   )

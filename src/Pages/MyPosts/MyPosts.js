@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { store } from '../../context/store'
 import { baseURL } from '../../config.json'
 import Item from '../../Component/Item/Item'
-import { RESET_ERROR, RESET_LOADING, SET_DATA, SET_ERROR, SET_LOADING, LOAD_MORE, DELETE_POST, SET_DELETE_DONE, RESET_DELETE_DONE, SET_EDITABLE_DATA, RESET_EDITABLE_DATA, UPDATE_POST } from '../../context/Action/myActionTypes'
+import { RESET_ERROR, RESET_LOADING, SET_DATA, SET_ERROR, SET_LOADING, LOAD_MORE, DELETE_POST, SET_ACTION_DONE, RESET_ACTION_DONE, SET_EDITABLE_DATA, RESET_EDITABLE_DATA, UPDATE_POST, SAVE_NEW_POST } from '../../context/Action/myActionTypes'
 import Spinner from '../../UI/Spinner/Spinner'
 import AlertBox from '../../UI/AlertBox/AlertBox'
 import MyModal from '../../UI/Modal/Modal'
@@ -10,13 +10,18 @@ import { Form } from 'react-bootstrap'
 
 
 const MyPosts = () => {
+  const { user } = useContext(store)
   const { myPosts, myPostDispatch } = useContext(store)
-  const [updateData, setUpdateData] = useState(null)
 
-  // console.log(myPosts.editAbleData);
+  const [updateData, setUpdateData] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [addNew, setAddNew] = useState(false)
+
+  const userId = user.userID
+  // --------------------------------------------------------------------------------------
+  // fetch post from api using callback
   const fetchMyPosts = useCallback(async () => {
     try {
-      const userId = 2
       const url = `users/${userId}/posts`
       const settings = {
         method: 'GET',
@@ -46,87 +51,155 @@ const MyPosts = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
+  // --------------------------------------------------------------------------------------
+  // set posts data to context 
   useEffect(() => {
     if (myPosts.data.length === 0) {
       fetchMyPosts()
     }
   }, [myPosts.data.length, fetchMyPosts])
-
+  // --------------------------------------------------------------------------------------
+  // load more data handler 
   const loadMoreData = () => {
     myPostDispatch({ type: LOAD_MORE, payload: 10 })
   }
-
+  // --------------------------------------------------------------------------------------
   // delete item handler 
   const deletePostHandler = async (id) => {
-    const postId = id
-    const url = `posts/${postId}`
-    const settings = {
-      method: 'DELETE',
-      type: "cors"
+    try {
+      const postId = id
+      const url = `posts/${postId}`
+      const settings = {
+        method: 'DELETE',
+        type: "cors"
+      }
+      const response = await fetch(baseURL + url, settings);
+      if (response.ok) {
+        myPostDispatch({ type: DELETE_POST, payload: id })
+        myPostDispatch({ type: SET_ACTION_DONE, payload: { type: 'success', message: 'Delete Success' } })
+      }
+      else {
+        console.log(response);
+        myPostDispatch({ type: SET_ACTION_DONE, payload: { type: 'danger', message: 'Delete Failed' } })
+      }
+      setTimeout(() => { myPostDispatch({ type: RESET_ACTION_DONE }) }, 1500)
     }
-    const response = await fetch(baseURL + url, settings);
-    if (response.ok) {
-      myPostDispatch({ type: DELETE_POST, payload: id })
-      myPostDispatch({ type: SET_DELETE_DONE, payload: { type: 'success', message: 'Delete Success' } })
-      setTimeout(() => { myPostDispatch({ type: RESET_DELETE_DONE }) }, 1500)
-    }
-    else {
-      console.log(response);
-      myPostDispatch({ type: SET_DELETE_DONE, payload: { type: 'danger', message: 'Delete Failed' } })
-      setTimeout(() => { myPostDispatch({ type: RESET_DELETE_DONE }) }, 1500)
+    catch (error) {
+      console.log(error);
     }
   }
-
+  // --------------------------------------------------------------------------------------
   // edit Item Handler
   const editItemHandler = (id) => {
     myPostDispatch({ type: SET_EDITABLE_DATA, payload: id })
   }
-
+  // --------------------------------------------------------------------------------------
+  // st update able data to state
   useEffect(() => {
     if (myPosts.editAbleData) {
       setUpdateData(myPosts?.editAbleData)
     }
   }, [myPosts.editAbleData])
-
+  // --------------------------------------------------------------------------------------
+  // input onchange handler 
   const onChangeHandler = (e) => {
     const updateInfo = { ...updateData }
     updateInfo[e.target.name] = e.target.value
     setUpdateData(updateInfo)
   }
-
+  // --------------------------------------------------------------------------------------
+  // post update handler 
   const onUpdateHandler = async () => {
-    const postId = updateData.id
-    const url = `posts/${postId}`
-    const settings = {
-      method: 'PUT',
-      type: "cors",
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-      body: JSON.stringify(updateData)
-    }
+    try {
+      const postId = updateData.id
+      const url = `posts/${postId}`
+      const settings = {
+        method: 'PUT',
+        type: "cors",
+        body: JSON.stringify(updateData),
+        headers: { 'Content-type': 'application/json; charset=UTF-8', },
+      }
 
-    const response = await fetch(baseURL + url, settings)
-    if (response.ok) {
-      const data = await response.json()
-      myPostDispatch({ type: UPDATE_POST, payload: { data, id: postId } })
-      setUpdateData(null)
+      setLoading(true)
+      const response = await fetch(baseURL + url, settings)
+      if (response.ok) {
+        const data = await response.json()
+        myPostDispatch({ type: UPDATE_POST, payload: { data, postId } })
+        myPostDispatch({ type: SET_ACTION_DONE, payload: { type: 'success', message: 'Post UpDate Successfully' } })
+      }
+      else {
+        console.log(response)
+        myPostDispatch({ type: SET_ACTION_DONE, payload: { type: 'danger', message: 'Post UpDate Failed' } })
+      }
+
       myPostDispatch({ type: RESET_EDITABLE_DATA })
-    }
-    else {
-      console.log(response)
       setUpdateData(null)
-      myPostDispatch({ type: RESET_EDITABLE_DATA })
+      setLoading(false)
+      setTimeout(() => { myPostDispatch({ type: RESET_ACTION_DONE }) }, 1500)
+    } catch (error) {
+      console.log(error)
     }
   }
-
+  // --------------------------------------------------------------------------------------
+  // post update cancel handler 
   const onCancelUpdateHandler = () => {
-    setUpdateData(null)
     myPostDispatch({ type: RESET_EDITABLE_DATA })
+    setUpdateData(null)
   }
 
-  const modal = <MyModal open={(myPosts.editAbleData) ? true : false} onSubmit={onUpdateHandler} onClose={onCancelUpdateHandler} editAble={myPosts.editAbleData}>
+  // --------------------------------------------------------------------------------------
+  // add new post handler
+  const addNewPostHandler = async () => {
+    try {
+      if (updateData?.title && updateData?.body) {
+        myPostDispatch({ type: RESET_ACTION_DONE })
+        const newPostData = { userId, ...updateData }
+        const url = `posts`
+        const settings = {
+          method: 'POST',
+          type: "cors",
+          body: JSON.stringify(newPostData),
+          headers: { 'Content-type': 'application/json; charset=UTF-8', },
+        }
+
+        setLoading(true)
+        const response = await fetch(baseURL + url, settings)
+        if (response.ok) {
+          const responseData = await response.json()
+          myPostDispatch({ type: SAVE_NEW_POST, payload: responseData })
+          myPostDispatch({ type: SET_ACTION_DONE, payload: { type: 'success', message: 'New Post successfully saved' } })
+        }
+        else {
+          console.log(response)
+          myPostDispatch({ type: SET_ACTION_DONE, payload: { type: 'danger', message: 'New Post save failed' } })
+        }
+        setAddNew(false)
+        setLoading(false)
+        setUpdateData(null)
+      }
+      else {
+        myPostDispatch({ type: SET_ACTION_DONE, payload: { type: 'danger', message: 'All Fields Required' } })
+      }
+      setTimeout(() => myPostDispatch({ type: RESET_ACTION_DONE }), 1500)
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
+  // --------------------------------------------------------------------------------------
+  // cancel add new post handler
+  const cancelNewPostHandler = () => {
+    setAddNew(false)
+    setUpdateData(null)
+  }
+
+  const modal = <MyModal
+    open={(myPosts.editAbleData || addNew) ? true : false}
+    onSubmit={myPosts.editAbleData ? onUpdateHandler : addNewPostHandler}
+    onClose={myPosts.editAbleData ? onCancelUpdateHandler : cancelNewPostHandler}
+    editAble={myPosts.editAbleData ? true : false}
+    loading={loading}
+  >
     <Form>
       <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
         <Form.Label>Title</Form.Label>
@@ -137,7 +210,7 @@ const MyPosts = () => {
         <Form.Control name='body' as="textarea" rows={5} onChange={(e) => onChangeHandler(e)} value={updateData?.body || ''} />
       </Form.Group>
     </Form>
-  </MyModal>
+  </MyModal >
 
   return (
     <>
@@ -149,7 +222,7 @@ const MyPosts = () => {
         </div>
         <div className='col-lg-3'>
           <div className="d-flex justify-content-end align-items-center">
-            <button className='btn btn-md btn-info'>Add New Post</button>
+            <button onClick={() => setAddNew(true)} className='btn btn-md btn-info'>Add New Post</button>
           </div>
         </div>
 
@@ -161,6 +234,7 @@ const MyPosts = () => {
                   {myPosts.data?.slice(0, myPosts.initialLoad).map(el =>
                     <Item
                       key={el.id}
+                      postId={el.id}
                       editAble={myPosts.editAble}
                       title={el.title}
                       body={el.body}

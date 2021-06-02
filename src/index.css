@@ -32,6 +32,10 @@ p {
   margin-bottom: 0;
 }
 
+.hover:hover {
+  cursor: pointer;
+}
+
 /* delete item worn */
 .delete__popover {
   position: absolute;

@@ -9,7 +9,7 @@ import Spinner from '../../UI/Spinner/Spinner'
 
 const Comment = () => {
   const { posts, postDispatch } = useContext(store)
-  console.log(posts);
+  // console.log(posts);
 
   const fetchAllPosts = useCallback(async () => {
     try {
@@ -62,7 +62,7 @@ const Comment = () => {
           <>
             {posts.error ? <div className="alert alert-danger" role="alert">{posts.error}</div> :
               <>
-                {posts.data?.slice(0, posts.initialLoad).map(el => <Item key={el.id} title={el.title} body={el.body} />)}
+                {posts.data?.slice(0, posts.initialLoad).map(el => <Item postId={el.id} key={el.id} title={el.title} body={el.body} />)}
                 {posts?.initialLoad >= posts.data?.length ?
                   <div className="alert alert-info" role="alert">No More Data Available !!!</div> :
                   <button className='btn btn-md btn-primary mt-3' onClick={loadMoreData}>Show More</button>}

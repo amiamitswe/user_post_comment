@@ -1,0 +1,31 @@
+.Comment {
+  border: 1px solid gray;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.Comment:not(:last-child) {
+  margin-bottom: 0.5rem;
+}
+
+.Comment > p {
+  font-size: 18px;
+}
+
+.Comment > p:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+.Comment > p > span {
+  background-color: var(--primary);
+  padding: 1px 5px 2px;
+  color: #fff;
+  border-radius: 3px;
+}
+
+.Commenter {
+  background: #ececec;
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: #131313;
+}

@@ -1,4 +1,4 @@
-import { SET_DATA, SET_LOADING, RESET_LOADING, SET_ERROR, RESET_ERROR, LOAD_MORE, DELETE_POST, SET_DELETE_DONE, RESET_DELETE_DONE, SET_EDITABLE_DATA, RESET_EDITABLE_DATA, UPDATE_POST } from '../Action/myActionTypes'
+import { SET_DATA, SET_LOADING, RESET_LOADING, SET_ERROR, RESET_ERROR, LOAD_MORE, DELETE_POST, SET_ACTION_DONE, RESET_ACTION_DONE, SET_EDITABLE_DATA, RESET_EDITABLE_DATA, UPDATE_POST, SAVE_NEW_POST } from '../Action/myActionTypes'
 
 const myPostReducer = (state, { payload, type }) => {
   switch (type) {
@@ -34,6 +34,15 @@ const myPostReducer = (state, { payload, type }) => {
         ...state,
         error: null
       }
+    case SAVE_NEW_POST:
+      console.log(payload);
+      const oldPosts = [...state.data]
+      oldPosts.unshift(payload)
+      return {
+        ...state,
+        data: oldPosts
+      }
+
     case DELETE_POST:
       const updateData = [...state.data]
       const findIndex = updateData.findIndex(el => el.id === payload)
@@ -44,22 +53,22 @@ const myPostReducer = (state, { payload, type }) => {
         ...state,
         data: updateData
       }
-    case SET_DELETE_DONE:
+    case SET_ACTION_DONE:
       return {
         ...state,
         deleteMessage: payload
       }
 
-    case RESET_DELETE_DONE:
+    case RESET_ACTION_DONE:
       return {
         ...state,
         deleteMessage: {}
       }
 
     case UPDATE_POST:
-      const { data, id } = payload
+      const { data, postId } = payload
       const updatedData = [...state.data]
-      const updatedDataIndex = updatedData.findIndex(el => el.id === id)
+      const updatedDataIndex = updatedData.findIndex(el => el.id === postId)
       if (updatedDataIndex >= 0) {
         updatedData[updatedDataIndex] = data
       }

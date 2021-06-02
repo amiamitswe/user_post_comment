@@ -1,16 +1,19 @@
-import React from 'react'
 import { Redirect, Route, Switch } from 'react-router'
 import Header from './Header/Header'
 import Sidebar from './SideBar/SideBar'
 import Footer from './Footer/Footer'
-import PageNotFound from '../Pages/PageNotFound/PageNotFound'
-import Post from '../Pages/Post/Post'
-import MyPosts from '../Pages/MyPosts/MyPosts'
-import PostDetails from '../Pages/PostDetails/PostDetails'
-import Users from '../Pages/Users/Users'
+import routes from '../../Routes/Routes'
 import classes from './Layout.module.css'
 
 const Layout = () => {
+
+  const RenderRoute = route => {
+    document.title = route.title || 'User Post Comment App'
+    return (
+      <Route path={route.path} component={route.component} exact />
+    )
+  }
+
   return (
     <>
       <Header />
@@ -24,23 +27,11 @@ const Layout = () => {
 
                   <Switch>
                     <Redirect exact from="/" to="/post" />
-                    <Route path="/postDetails/:postId" exact>
-                      <PostDetails />
-                    </Route>
-                    <Route path="/post">
-                      <Post />
-                    </Route>
-                    <Route path="/myPosts">
-                      <MyPosts />
-                    </Route>
-                    <Route path="/allUsers">
-                      <Users />
-                    </Route>
-                    <Route>
-                      <PageNotFound />
-                    </Route>
-                  </Switch>
 
+                    {routes.map((route, index) => (
+                      <RenderRoute key={index} {...route} />
+                    ))}
+                  </Switch>
 
                 </div>
               </div>

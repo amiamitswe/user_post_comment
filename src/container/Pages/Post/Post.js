@@ -1,10 +1,10 @@
 import React, { useCallback, useContext, useEffect } from 'react'
-import { store } from '../../context/store'
-import { baseURL } from '../../config.json'
-import Item from '../../Component/Item/Item'
+import { store } from '../../../context/store'
+import { baseURL } from '../../../config.json'
+import Item from '../../../Component/Item/Item'
 
-import { LOAD_MORE, RESET_ERROR, RESET_LOADING, SAVE_POSTS, SET_ERROR, SET_LOADING } from '../../context/Action/postActionTypes'
-import Spinner from '../../UI/Spinner/Spinner'
+import { LOAD_MORE, RESET_ERROR, RESET_LOADING, SAVE_POSTS, SET_ERROR, SET_LOADING } from '../../../context/Action/postActionTypes'
+import Spinner from '../../../UI/Spinner/Spinner'
 
 
 const Comment = () => {
@@ -22,11 +22,11 @@ const Comment = () => {
       postDispatch({ type: SET_LOADING })
       if (response.ok) {
         const data = await response.json()
-        setTimeout(() => {
-          postDispatch({ type: SAVE_POSTS, payload: data })
-          postDispatch({ type: RESET_ERROR })
-          postDispatch({ type: RESET_LOADING })
-        }, 500)
+        // setTimeout(() => {
+        postDispatch({ type: SAVE_POSTS, payload: data })
+        postDispatch({ type: RESET_ERROR })
+        postDispatch({ type: RESET_LOADING })
+        // }, 500)
       }
       else {
         let errorResponse = response;

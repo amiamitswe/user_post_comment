@@ -1,21 +1,30 @@
 import React, { createContext, useReducer } from 'react'
-import { commentInitialState, initialUser, initialPosts, initialMyPosts } from './InitialState/initialState'
-import commentReducer from './Reducer/commentReducer'
+import { initialUser, initialPosts, initialMyPosts, initialUsers } from './InitialState/initialState'
 import postReducer from './Reducer/postReducer'
 import myPostReducer from './Reducer/myPostReducer'
+import usersReducer from './Reducer/usersReducer'
 
 const store = createContext()
 
 const { Provider } = store
 
 const StateProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(commentReducer, commentInitialState)
   const [user] = useReducer({}, initialUser)
   const [posts, postDispatch] = useReducer(postReducer, initialPosts)
   const [myPosts, myPostDispatch] = useReducer(myPostReducer, initialMyPosts)
+  const [allUsers, allUsersDispatch] = useReducer(usersReducer, initialUsers)
 
   return (
-    <Provider value={{ dispatch, state, user, posts, postDispatch, myPosts, myPostDispatch }}>
+    <Provider
+      value={{
+        user,
+        posts,
+        postDispatch,
+        myPosts,
+        myPostDispatch,
+        allUsers,
+        allUsersDispatch
+      }}>
       {children}
     </Provider>
   )

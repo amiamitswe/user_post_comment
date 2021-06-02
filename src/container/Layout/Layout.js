@@ -2,15 +2,13 @@ import React from 'react'
 import { Redirect, Route, Switch } from 'react-router'
 import Header from './Header/Header'
 import Sidebar from './SideBar/SideBar'
-import Home from '../Home/Home'
-import Post from '../Post/Post'
-import Comment from '../Comment/Comment'
-import Footer from '../../Component/Footer/Footer'
+import Footer from './Footer/Footer'
+import PageNotFound from '../Pages/PageNotFound/PageNotFound'
+import Post from '../Pages/Post/Post'
+import MyPosts from '../Pages/MyPosts/MyPosts'
+import PostDetails from '../Pages/PostDetails/PostDetails'
+import Users from '../Pages/Users/Users'
 import classes from './Layout.module.css'
-// import User from '../User/User'
-import MyPosts from '../MyPosts/MyPosts'
-import PostDetails from '../PostDetails/PostDetails'
-import PageNotFound from '../PageNotFound/PageNotFound'
 
 const Layout = () => {
   return (
@@ -24,23 +22,19 @@ const Layout = () => {
               <div className="col-12">
                 <div className="form__wrapper p-3">
 
-
                   <Switch>
-                    <Redirect exact from="/" to="/home" />
+                    <Redirect exact from="/" to="/post" />
                     <Route path="/postDetails/:postId" exact>
                       <PostDetails />
-                    </Route>
-                    <Route path="/comments">
-                      <Comment />
-                    </Route>
-                    <Route path="/home">
-                      <Home />
                     </Route>
                     <Route path="/post">
                       <Post />
                     </Route>
                     <Route path="/myPosts">
                       <MyPosts />
+                    </Route>
+                    <Route path="/allUsers">
+                      <Users />
                     </Route>
                     <Route>
                       <PageNotFound />

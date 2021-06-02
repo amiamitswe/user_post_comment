@@ -4,18 +4,26 @@
   border-radius: 5px;
 }
 
+.TagName {
+  background: #ececec;
+  padding: 1px 10px;
+  margin-right: 0.5rem;
+  border-radius: 3px;
+  color: #131313;
+}
+
 .Title {
   font-size: 20px;
   line-height: 20px;
   font-weight: 700;
   letter-spacing: 0.02em;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   color: #131313;
 }
 
 .Body {
   font-size: 20px;
-  line-height: 20px;
+  line-height: 30px;
   font-weight: 400;
   letter-spacing: 0.02em;
   color: #292727;

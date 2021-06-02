@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router'
-import { baseURL } from '../../config.json'
-import Spinner from '../../UI/Spinner/Spinner'
+import { baseURL } from '../../../config.json'
+import Spinner from '../../../UI/Spinner/Spinner'
 import Comment from './Comment/Comment'
 import PageNotFound from '../PageNotFound/PageNotFound'
 

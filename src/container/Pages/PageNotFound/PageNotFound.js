@@ -1,5 +1,5 @@
 import React from 'react'
-import ErrorLoading from '../../assets/errorPage.gif'
+import ErrorLoading from '../../../assets/errorPage.gif'
 
 const PageNotFound = ({ text }) => {
   return (

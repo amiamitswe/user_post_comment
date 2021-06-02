@@ -1,9 +1,3 @@
-const commentInitialState = {
-  comments: {
-    name: 'Amit',
-    count: 10
-  }
-}
 
 const initialUser = {
   userID: 2,
@@ -27,4 +21,10 @@ const initialMyPosts = {
   editAbleData: null
 }
 
-export { commentInitialState, initialUser, initialPosts, initialMyPosts }
+const initialUsers = {
+  data: [],
+  isLoading: true,
+  error: null
+}
+
+export { initialUser, initialPosts, initialMyPosts, initialUsers }

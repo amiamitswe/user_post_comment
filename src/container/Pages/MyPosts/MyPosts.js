@@ -1,11 +1,11 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { store } from '../../context/store'
-import { baseURL } from '../../config.json'
-import Item from '../../Component/Item/Item'
-import { RESET_ERROR, RESET_LOADING, SET_DATA, SET_ERROR, SET_LOADING, LOAD_MORE, DELETE_POST, SET_ACTION_DONE, RESET_ACTION_DONE, SET_EDITABLE_DATA, RESET_EDITABLE_DATA, UPDATE_POST, SAVE_NEW_POST } from '../../context/Action/myActionTypes'
-import Spinner from '../../UI/Spinner/Spinner'
-import AlertBox from '../../UI/AlertBox/AlertBox'
-import MyModal from '../../UI/Modal/Modal'
+import { store } from '../../../context/store'
+import { baseURL } from '../../../config.json'
+import Item from '../../../Component/Item/Item'
+import { RESET_ERROR, RESET_LOADING, SET_DATA, SET_ERROR, SET_LOADING, LOAD_MORE, DELETE_POST, SET_ACTION_DONE, RESET_ACTION_DONE, SET_EDITABLE_DATA, RESET_EDITABLE_DATA, UPDATE_POST, SAVE_NEW_POST } from '../../../context/Action/myActionTypes'
+import Spinner from '../../../UI/Spinner/Spinner'
+import AlertBox from '../../../Component/AlertBox/AlertBox'
+import MyModal from '../../../Component/Modal/Modal'
 import { Form } from 'react-bootstrap'
 
 
@@ -32,11 +32,11 @@ const MyPosts = () => {
       myPostDispatch({ type: SET_LOADING })
       if (response.ok) {
         const data = await response.json()
-        setTimeout(() => {
-          myPostDispatch({ type: SET_DATA, payload: data })
-          myPostDispatch({ type: RESET_ERROR })
-          myPostDispatch({ type: RESET_LOADING })
-        }, 500)
+        // setTimeout(() => {
+        myPostDispatch({ type: SET_DATA, payload: data })
+        myPostDispatch({ type: RESET_ERROR })
+        myPostDispatch({ type: RESET_LOADING })
+        // }, 500)
       }
       else {
         let errorResponse = response;
@@ -203,11 +203,11 @@ const MyPosts = () => {
     <Form>
       <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
         <Form.Label>Title</Form.Label>
-        <Form.Control name='title' type="text" placeholder="Title" onChange={(e) => onChangeHandler(e)} value={updateData?.title || ''} />
+        <Form.Control name='title' type="text" placeholder="Title ..." onChange={(e) => onChangeHandler(e)} value={updateData?.title || ''} />
       </Form.Group>
       <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
         <Form.Label>Body</Form.Label>
-        <Form.Control name='body' as="textarea" rows={5} onChange={(e) => onChangeHandler(e)} value={updateData?.body || ''} />
+        <Form.Control name='body' as="textarea" placeholder='Description here ...' rows={5} onChange={(e) => onChangeHandler(e)} value={updateData?.body || ''} />
       </Form.Group>
     </Form>
   </MyModal >

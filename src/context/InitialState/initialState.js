@@ -23,8 +23,13 @@ const initialMyPosts = {
 
 const initialUsers = {
   data: [],
+  filteredData: [],
   isLoading: true,
-  error: null
+  error: null,
+  postPerPage: 5,
+  sortBy: '',
+  currentPage: 1,
+  searchString: ''
 }
 
 export { initialUser, initialPosts, initialMyPosts, initialUsers }

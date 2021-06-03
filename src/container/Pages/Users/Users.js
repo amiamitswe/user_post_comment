@@ -1,16 +1,17 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import Pagination from '../../../Component/Pagination/Pagination'
+
 import { store } from '../../../context/store';
 import { baseURL } from '../../../config.json'
-import { RESET_LOADING, SAVE_USERS, SET_LOADING } from '../../../context/Action/usersAction';
+import { POST_PER_PAGE, RESET_LOADING, SAVE_USERS, SEARCH_DATA, SEARCH_STRING, SET_LOADING } from '../../../context/Action/usersAction';
 import Spinner from '../../../UI/Spinner/Spinner';
+import FilterData from '../../../Component/FilterData/FilterData';
+import { useHistory } from 'react-router';
 
 const Users = () => {
+  const history = useHistory()
   const { allUsers, allUsersDispatch } = useContext(store)
-  // eslint-disable-next-line no-unused-vars
-  const [pageData, setPageData] = useState({});
-  // eslint-disable-next-line no-unused-vars
-  const [urlProps, setUrlProps] = useState({});
+  const searchString = allUsers.searchString
+  const [pageData, setPageData] = useState({})
 
   const fetchUsersData = useCallback(async () => {
     try {
@@ -24,6 +25,7 @@ const Users = () => {
       allUsersDispatch({ type: SET_LOADING })
       if (response.ok) {
         const userData = await response.json()
+        setPageData(userData)
         allUsersDispatch({ type: SAVE_USERS, payload: userData })
         allUsersDispatch({ type: RESET_LOADING })
       }
@@ -45,7 +47,35 @@ const Users = () => {
     if (allUsers.data.length === 0) {
       fetchUsersData()
     }
-  }, [allUsers.data.length, fetchUsersData])
+    else {
+      setPageData(allUsers.filteredData)
+    }
+  }, [allUsers.data.length, fetchUsersData, allUsers.filteredData])
+
+
+  const searchHandler = (e) => {
+    const userData = allUsers.data
+    allUsersDispatch({ type: SEARCH_STRING, payload: e.target.value.trim().toLowerCase() })
+    // have to think about it
+    allUsersDispatch({ type: POST_PER_PAGE, payload: userData.length })
+
+    if (searchString.length > 0) {
+      const data = userData.filter(el => (
+        el.name.toLowerCase().match(searchString) || el.email.toLowerCase().match(searchString)
+      ))
+
+      allUsersDispatch({ type: SEARCH_DATA, payload: data })
+    }
+  }
+
+  // useEffect(() => {
+  //   if (searchString.length > 0) {
+  //     searchHandler()
+  //   }
+  // }, [])
+
+
+
 
   return (
     <>
@@ -53,8 +83,8 @@ const Users = () => {
         <div className="col-12">
           <div className='userHeader mb-2'>
             <h3>All Users</h3>
-            <div className="form-group w-25">
-              <input type="text" className="form-control" placeholder="Search..." />
+            <div className="form-group w-50">
+              <input type="text" className="form-control" value={searchString} onChange={searchHandler} placeholder="Search..." />
             </div>
           </div>
         </div>
@@ -75,15 +105,15 @@ const Users = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {allUsers.data.length > 0 &&
-                          allUsers.data?.map((user) => (
+                        {pageData.length > 0 &&
+                          pageData?.map((user) => (
                             <tr key={user.id}>
                               <td><span style={{ color: "#636363" }}>{user.name}</span></td>
                               <td><span style={{ color: "#636363" }}>{user.email}</span></td>
                               <td><span style={{ color: "#636363" }}>{user.website}</span></td>
                               <td>
                                 <div className="actionButton">
-                                  <button onClick={() => console.log(user.id)}>
+                                  <button onClick={() => history.push(`/allUsers/${user.id}`)}>
                                     {/* <FontAwesomeIcon icon={faEye} /> */}
                                      V
                                   </button>
@@ -98,7 +128,7 @@ const Users = () => {
                 </div>
               </div>
               <div className="row align-items-center">
-                <Pagination pageData={pageData} changeUrlProps={setUrlProps} />
+                <FilterData />
               </div>
             </>
           }

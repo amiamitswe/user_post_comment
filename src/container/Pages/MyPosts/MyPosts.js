@@ -217,10 +217,10 @@ const MyPosts = () => {
       {myPosts.deleteMessage.type && <AlertBox type={myPosts.deleteMessage.type} message={myPosts.deleteMessage.message} />}
       {modal}
       <div className="row">
-        <div className="col-lg-9">
+        <div className="col-6">
           <h3 className='mb-3'>My Posts</h3>
         </div>
-        <div className='col-lg-3'>
+        <div className='col-6'>
           <div className="d-flex justify-content-end align-items-center">
             <button onClick={() => setAddNew(true)} className='btn btn-md btn-info'>Add New Post</button>
           </div>

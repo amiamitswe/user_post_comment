@@ -2,8 +2,7 @@
   overflow: hidden;
 }
 .SidebarContainer {
-  /* width: 300px; */
-  width: 150px;
+  width: 250px;
   height: calc(100% - 70px);
   position: fixed;
   left: 0;

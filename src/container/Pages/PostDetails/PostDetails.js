@@ -4,6 +4,8 @@ import { baseURL } from '../../../config.json'
 import Spinner from '../../../UI/Spinner/Spinner'
 import Comment from './Comment/Comment'
 import PageNotFound from '../PageNotFound/PageNotFound'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 
 const PostDetails = () => {
   const { postId } = useParams()
@@ -64,7 +66,8 @@ const PostDetails = () => {
   return (
     <div className="row">
       <div className="col-12">
-        <h3 className=' d-flex'><button onClick={goBackPage} className='btn btn-sm btn-info mr-4'>Go Back</button>
+        <h3 className=' d-flex'>
+          <button onClick={goBackPage} className='btn btn-sm btn-info mr-4'><FontAwesomeIcon className='mr-2' icon={faArrowLeft} />Go Back</button>
           Post Details
         </h3>
         <hr />

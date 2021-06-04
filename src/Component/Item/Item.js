@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { useHistory } from 'react-router';
 import classes from './Item.module.css'
 import WornUser from '../WornUser/WornUser';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const Item = ({ postId, title, body, editAble, deleteItem, editItem }) => {
   const history = useHistory()
@@ -25,7 +27,7 @@ const Item = ({ postId, title, body, editAble, deleteItem, editItem }) => {
 
   // on click redirect to page details
   const onClickPostHandler = () => {
-    history.push(`postDetails/${postId}`)
+    history.push(`/postDetails/${postId}`)
   }
 
   return (
@@ -36,10 +38,10 @@ const Item = ({ postId, title, body, editAble, deleteItem, editItem }) => {
       </div>
 
       <div className='d-flex'>
-        <button onClick={onClickPostHandler} className='btn btn-sm btn-primary mr-2'>Show Details</button>
+        <button onClick={onClickPostHandler} className='btn btn-sm btn-primary mr-2'><FontAwesomeIcon className='mr-2' icon={faEye} />Show Details</button>
         {editAble && <div className='position-relative'>
-          <button onClick={editItem} className='btn btn-sm btn-info mr-2'>Edit</button>
-          <button onClick={warnUser} className='btn btn-sm btn-danger'>Delete</button>
+          <button onClick={editItem} className='btn btn-sm btn-info mr-2'><FontAwesomeIcon className='mr-2' icon={faEdit} />Edit</button>
+          <button onClick={warnUser} className='btn btn-sm btn-danger'><FontAwesomeIcon className='mr-2' icon={faTrash} />Delete</button>
 
           <WornUser
             closePopover={closePopover}

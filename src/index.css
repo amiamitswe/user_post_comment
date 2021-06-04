@@ -1,5 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap");
 
+:root {
+  --blue: #1e90ff;
+  --white: #ffffff;
+  --primary: #17a2b8;
+}
+
 body {
   margin: 0;
   font-family: "Noto Sans JP", sans-serif;
@@ -22,6 +28,10 @@ code {
 .form__wrapper .form-check {
   display: flex;
   align-items: center;
+}
+
+a {
+  color: var(--primary);
 }
 
 a:hover {

@@ -7,6 +7,8 @@ import Spinner from '../../../UI/Spinner/Spinner'
 import AlertBox from '../../../Component/AlertBox/AlertBox'
 import MyModal from '../../../Component/Modal/Modal'
 import { Form } from 'react-bootstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEllipsisH, faPlus } from '@fortawesome/free-solid-svg-icons'
 
 
 const MyPosts = () => {
@@ -222,7 +224,9 @@ const MyPosts = () => {
         </div>
         <div className='col-6'>
           <div className="d-flex justify-content-end align-items-center">
-            <button onClick={() => setAddNew(true)} className='btn btn-md btn-info'>Add New Post</button>
+            <button onClick={() => setAddNew(true)} className='btn btn-md btn-info'>
+              <FontAwesomeIcon className='mr-2' icon={faPlus} />Add New Post
+            </button>
           </div>
         </div>
 
@@ -244,7 +248,7 @@ const MyPosts = () => {
                   )}
                   {myPosts?.initialLoad >= myPosts.data?.length ?
                     <div className="alert alert-info" role="alert">No More Data Available !!!</div> :
-                    <button className='btn btn-md btn-primary mt-3' onClick={loadMoreData}>Show More</button>}
+                    <button className='btn btn-md btn-primary mt-3' onClick={loadMoreData}>Show More <FontAwesomeIcon className='ml-3' icon={faEllipsisH} /></button>}
                 </>
               }
             </>

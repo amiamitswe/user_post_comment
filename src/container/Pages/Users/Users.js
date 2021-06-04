@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 
 import { store } from '../../../context/store';
 import { baseURL } from '../../../config.json'
@@ -6,8 +6,11 @@ import { POST_PER_PAGE, RESET_LOADING, SAVE_USERS, SEARCH_DATA, SEARCH_STRING, S
 import Spinner from '../../../UI/Spinner/Spinner';
 import FilterData from '../../../Component/FilterData/FilterData';
 import { useHistory } from 'react-router';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
 
 const Users = () => {
+  const entriesRef = useRef()
   const history = useHistory()
   const { allUsers, allUsersDispatch } = useContext(store)
   const searchString = allUsers.searchString
@@ -53,28 +56,26 @@ const Users = () => {
   }, [allUsers.data.length, fetchUsersData, allUsers.filteredData])
 
 
-  const searchHandler = (e) => {
+  const searchHandler = () => {
     const userData = allUsers.data
-    allUsersDispatch({ type: SEARCH_STRING, payload: e.target.value.trim().toLowerCase() })
-    // have to think about it
-    allUsersDispatch({ type: POST_PER_PAGE, payload: userData.length })
+    allUsersDispatch({ type: SEARCH_STRING, payload: entriesRef.current.value.trim().toLowerCase() })
+    allUsersDispatch({ type: POST_PER_PAGE, payload: 5 })
 
     if (searchString.length > 0) {
       const data = userData.filter(el => (
-        el.name.toLowerCase().match(searchString) || el.email.toLowerCase().match(searchString)
+        el.name.toLowerCase().match(searchString) || el.email.toLowerCase().match(searchString) || el.website.toLowerCase().match(searchString)
       ))
 
       allUsersDispatch({ type: SEARCH_DATA, payload: data })
     }
   }
 
-  // useEffect(() => {
-  //   if (searchString.length > 0) {
-  //     searchHandler()
-  //   }
-  // }, [])
-
-
+  useEffect(() => {
+    if (searchString.length > 0) {
+      searchHandler()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
 
   return (
@@ -84,7 +85,7 @@ const Users = () => {
           <div className='userHeader mb-2'>
             <h3>All Users</h3>
             <div className="form-group w-50">
-              <input type="text" className="form-control" value={searchString} onChange={searchHandler} placeholder="Search..." />
+              <input type="text" ref={entriesRef} className="form-control" value={searchString} onChange={searchHandler} placeholder="Search..." />
             </div>
           </div>
         </div>
@@ -114,8 +115,7 @@ const Users = () => {
                               <td>
                                 <div className="actionButton">
                                   <button onClick={() => history.push(`/allUsers/${user.id}`)}>
-                                    {/* <FontAwesomeIcon icon={faEye} /> */}
-                                     V
+                                    <FontAwesomeIcon icon={faEye} />
                                   </button>
                                 </div>
                               </td>

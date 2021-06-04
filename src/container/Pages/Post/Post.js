@@ -5,6 +5,8 @@ import Item from '../../../Component/Item/Item'
 
 import { LOAD_MORE, RESET_ERROR, RESET_LOADING, SAVE_POSTS, SET_ERROR, SET_LOADING } from '../../../context/Action/postActionTypes'
 import Spinner from '../../../UI/Spinner/Spinner'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEllipsisH } from '@fortawesome/free-solid-svg-icons'
 
 
 const Comment = () => {
@@ -65,7 +67,7 @@ const Comment = () => {
                 {posts.data?.slice(0, posts.initialLoad).map(el => <Item postId={el.id} key={el.id} title={el.title} body={el.body} />)}
                 {posts?.initialLoad >= posts.data?.length ?
                   <div className="alert alert-info" role="alert">No More Data Available !!!</div> :
-                  <button className='btn btn-md btn-primary mt-3' onClick={loadMoreData}>Show More</button>}
+                  <button className='btn btn-md btn-primary mt-3' onClick={loadMoreData}>Show More<FontAwesomeIcon className='ml-3' icon={faEllipsisH} /></button>}
               </>
             }
           </>

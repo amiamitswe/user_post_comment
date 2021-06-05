@@ -130,8 +130,14 @@ const MyPosts = () => {
         myPostDispatch({ type: SET_ACTION_DONE, payload: { type: 'success', message: 'Post UpDate Successfully' } })
       }
       else {
-        console.log(response)
-        myPostDispatch({ type: SET_ACTION_DONE, payload: { type: 'danger', message: 'Post UpDate Failed' } })
+        // // add it when new data will be at database
+        // console.log(response)
+        // myPostDispatch({ type: SET_ACTION_DONE, payload: { type: 'danger', message: 'Post UpDate Failed' } })
+
+        // // forcefully update data when data is not in database
+        // // remove it when new data will be at database
+        myPostDispatch({ type: UPDATE_POST, payload: { data: updateData, postId } })
+        myPostDispatch({ type: SET_ACTION_DONE, payload: { type: 'success', message: 'Post UpDate Successfully' } })
       }
 
       myPostDispatch({ type: RESET_EDITABLE_DATA })

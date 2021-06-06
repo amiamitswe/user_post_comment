@@ -1,8 +1,8 @@
 import React, { createContext, useReducer } from 'react'
-import { initialUser, initialPosts, initialMyPosts, initialUsers } from './InitialState/initialState'
 import postReducer from './Reducer/postReducer'
 import myPostReducer from './Reducer/myPostReducer'
 import usersReducer from './Reducer/usersReducer'
+import { initialUser, initialPosts, initialMyPosts, initialUsers } from './InitialState/initialState'
 
 const store = createContext()
 

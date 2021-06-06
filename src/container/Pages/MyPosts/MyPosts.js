@@ -1,15 +1,13 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { store } from '../../../context/store'
-import { baseURL } from '../../../config.json'
-import Item from '../../../Component/Item/Item'
-import { RESET_ERROR, RESET_LOADING, SET_DATA, SET_ERROR, SET_LOADING, LOAD_MORE, DELETE_POST, SET_ACTION_DONE, RESET_ACTION_DONE, SET_EDITABLE_DATA, RESET_EDITABLE_DATA, UPDATE_POST, SAVE_NEW_POST } from '../../../context/Action/myActionTypes'
-import Spinner from '../../../UI/Spinner/Spinner'
-import AlertBox from '../../../Component/AlertBox/AlertBox'
-import MyModal from '../../../Component/Modal/Modal'
-import { Form } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEllipsisH, faPlus } from '@fortawesome/free-solid-svg-icons'
-
+import { store } from '../../../context/store'
+import { RESET_ERROR, RESET_LOADING, SET_DATA, SET_ERROR, SET_LOADING, LOAD_MORE, DELETE_POST, SET_ACTION_DONE, RESET_ACTION_DONE, SET_EDITABLE_DATA, RESET_EDITABLE_DATA, UPDATE_POST, SAVE_NEW_POST } from '../../../context/Action/myActionTypes'
+import { baseURL } from '../../../config.json'
+import Item from '../../../Component/Item/Item'
+import Spinner from '../../../UI/Spinner/Spinner'
+import AlertBox from '../../../Component/AlertBox/AlertBox'
+import AddEditModal from '../../../Component/Modal/AddEditModal'
 
 const MyPosts = () => {
   const { user } = useContext(store)
@@ -20,6 +18,7 @@ const MyPosts = () => {
   const [addNew, setAddNew] = useState(false)
 
   const userId = user.userID
+
   // --------------------------------------------------------------------------------------
   // fetch post from api using callback
   const fetchMyPosts = useCallback(async () => {
@@ -29,16 +28,13 @@ const MyPosts = () => {
         method: 'GET',
         type: "cors"
       }
-
       const response = await fetch(baseURL + url, settings)
       myPostDispatch({ type: SET_LOADING })
       if (response.ok) {
         const data = await response.json()
-        // setTimeout(() => {
         myPostDispatch({ type: SET_DATA, payload: data })
         myPostDispatch({ type: RESET_ERROR })
         myPostDispatch({ type: RESET_LOADING })
-        // }, 500)
       }
       else {
         let errorResponse = response;
@@ -53,6 +49,7 @@ const MyPosts = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
   // --------------------------------------------------------------------------------------
   // set posts data to context 
   useEffect(() => {
@@ -60,11 +57,11 @@ const MyPosts = () => {
       fetchMyPosts()
     }
   }, [myPosts.data.length, fetchMyPosts])
+
   // --------------------------------------------------------------------------------------
   // load more data handler 
-  const loadMoreData = () => {
-    myPostDispatch({ type: LOAD_MORE, payload: 10 })
-  }
+  const loadMoreData = () => myPostDispatch({ type: LOAD_MORE, payload: 10 })
+
   // --------------------------------------------------------------------------------------
   // delete item handler 
   const deletePostHandler = async (id) => {
@@ -90,11 +87,13 @@ const MyPosts = () => {
       console.log(error);
     }
   }
+
   // --------------------------------------------------------------------------------------
   // edit Item Handler
   const editItemHandler = (id) => {
     myPostDispatch({ type: SET_EDITABLE_DATA, payload: id })
   }
+
   // --------------------------------------------------------------------------------------
   // st update able data to state
   useEffect(() => {
@@ -102,6 +101,7 @@ const MyPosts = () => {
       setUpdateData(myPosts?.editAbleData)
     }
   }, [myPosts.editAbleData])
+
   // --------------------------------------------------------------------------------------
   // input onchange handler 
   const onChangeHandler = (e) => {
@@ -109,6 +109,7 @@ const MyPosts = () => {
     updateInfo[e.target.name] = e.target.value
     setUpdateData(updateInfo)
   }
+
   // --------------------------------------------------------------------------------------
   // post update handler 
   const onUpdateHandler = async () => {
@@ -148,6 +149,7 @@ const MyPosts = () => {
       console.log(error)
     }
   }
+
   // --------------------------------------------------------------------------------------
   // post update cancel handler 
   const onCancelUpdateHandler = () => {
@@ -169,7 +171,6 @@ const MyPosts = () => {
           body: JSON.stringify(newPostData),
           headers: { 'Content-type': 'application/json; charset=UTF-8', },
         }
-
         setLoading(true)
         const response = await fetch(baseURL + url, settings)
         if (response.ok) {
@@ -194,6 +195,7 @@ const MyPosts = () => {
       console.log(error);
     }
   }
+
   // --------------------------------------------------------------------------------------
   // cancel add new post handler
   const cancelNewPostHandler = () => {
@@ -201,29 +203,21 @@ const MyPosts = () => {
     setUpdateData(null)
   }
 
-  const modal = <MyModal
+  // add or edit modal 
+  const addEditModal = <AddEditModal
+    loading={loading}
+    updateData={updateData}
+    onChangeHandler={onChangeHandler}
+    editAble={myPosts.editAbleData ? true : false}
     open={(myPosts.editAbleData || addNew) ? true : false}
     onSubmit={myPosts.editAbleData ? onUpdateHandler : addNewPostHandler}
     onClose={myPosts.editAbleData ? onCancelUpdateHandler : cancelNewPostHandler}
-    editAble={myPosts.editAbleData ? true : false}
-    loading={loading}
-  >
-    <Form>
-      <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-        <Form.Label>Title</Form.Label>
-        <Form.Control name='title' type="text" placeholder="Title ..." onChange={(e) => onChangeHandler(e)} value={updateData?.title || ''} />
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-        <Form.Label>Body</Form.Label>
-        <Form.Control name='body' as="textarea" placeholder='Description here ...' rows={5} onChange={(e) => onChangeHandler(e)} value={updateData?.body || ''} />
-      </Form.Group>
-    </Form>
-  </MyModal >
+  />
 
   return (
     <>
       {myPosts.deleteMessage.type && <AlertBox type={myPosts.deleteMessage.type} message={myPosts.deleteMessage.message} />}
-      {modal}
+      {addEditModal}
       <div className="row">
         <div className="col-6">
           <h3 className='mb-3'>My Posts</h3>
@@ -254,7 +248,11 @@ const MyPosts = () => {
                   )}
                   {myPosts?.initialLoad >= myPosts.data?.length ?
                     <div className="alert alert-info" role="alert">No More Data Available !!!</div> :
-                    <button className='btn btn-md btn-primary mt-3' onClick={loadMoreData}>Show More <FontAwesomeIcon className='ml-3' icon={faEllipsisH} /></button>}
+                    <button
+                      className='btn btn-md btn-primary mt-3'
+                      onClick={loadMoreData}>Show More
+                    <FontAwesomeIcon className='ml-3' icon={faEllipsisH} />
+                    </button>}
                 </>
               }
             </>

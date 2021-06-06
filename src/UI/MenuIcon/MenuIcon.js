@@ -1,15 +1,14 @@
-import './MenuIcon.css'
-import User from '../../assets/profile.svg'
+import { ReactComponent as User } from '../../assets/profile.svg'
 import { useHistory } from 'react-router'
+import classes from './MenuIcon.module.css'
 
-function MenuIcon() {
+const MenuIcon = () => {
   const history = useHistory()
+  const menuIconAction = () => history.push('/')
+
   return (
-    <div className="menuIcon" onClick={() => history.push('/')}>
-      {/* <span className="line1"></span>
-      <span className="line2"></span>
-      <span className="line3"></span> */}
-      <img src={User} className='img-fluid' alt="User" />
+    <div className={classes.menuIcon} onClick={menuIconAction}>
+      <User src={User} className='img-fluid' alt="User" />
     </div>
   )
 }

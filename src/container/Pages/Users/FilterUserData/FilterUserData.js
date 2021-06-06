@@ -1,33 +1,16 @@
 import React, { useEffect, useRef, useContext } from "react"
-import { store } from "../../context/store"
-import { CURRENT_PAGE, POST_PER_PAGE, POST_SORT_BY, SORT_USER_SAVE } from "../../context/Action/usersAction"
-import PaginationItem from "../PaginationItem/PaginationItem"
-import Select from "../Select/Select"
+import { store } from "../../../../context/store"
+import { CURRENT_PAGE, POST_PER_PAGE, POST_SORT_BY, SORT_USER_SAVE } from "../../../../context/Action/usersAction"
+import PaginationItem from "../../../../Component/PaginationItem/PaginationItem"
+import Select from "../../../../Component/Select/Select"
+import { sortShortOptions } from "../../../../Utility/library"
 
-const sortOption = [
-  {
-    _id: 'nameASC',
-    title: 'Name ASC',
-  },
-  {
-    _id: 'nameDSC',
-    title: 'Name DSC',
-  },
-  {
-    _id: 'emailASC',
-    title: 'Email ASC',
-  },
-  {
-    _id: 'emailDSC',
-    title: 'Email DSC',
-  },
-]
-
-const FilterData = () => {
+const FilterUserData = () => {
   const { allUsers, allUsersDispatch } = useContext(store)
   const postPerPage = allUsers.postPerPage
   const currentPage = allUsers.currentPage
   const users = allUsers.data
+  const sortOption = sortShortOptions
 
   const entriesRef = useRef()
 
@@ -47,7 +30,7 @@ const FilterData = () => {
     }, 500)
   }
 
-  // sort users on name and email 
+  // sort users on name and email
   const sortUsers = (e) => {
     const sortByOrder = e.target.value
     allUsersDispatch({ type: POST_SORT_BY, payload: sortByOrder })
@@ -96,39 +79,42 @@ const FilterData = () => {
       default:
         return allUsers.filteredData
     }
-
     allUsersDispatch({ type: SORT_USER_SAVE, payload: allUsers.filteredData })
   }
 
-  // set currentPage 
-  const setCurrentPage = (page) => {
-    allUsersDispatch({ type: CURRENT_PAGE, payload: page })
-  }
+  // set currentPage
+  const setCurrentPage = (page) => allUsersDispatch({ type: CURRENT_PAGE, payload: page })
 
   return (
     <>
       <div className="col-lg-5">
         <div className="form-row">
-
           <div className="col-6">
             <div className="form-group">
               <label>Show Entries (default 5)</label>
-              <input type="number" min={1} className="form-control" onChange={handlePostPerPage} defaultValue={postPerPage} ref={entriesRef} />
+              <input
+                type="number"
+                min={1}
+                className="form-control"
+                onChange={handlePostPerPage}
+                defaultValue={postPerPage}
+                ref={entriesRef}
+              />
             </div>
           </div>
-
           <div className="col-6">
             <div className="form-groups">
-              <Select value={allUsers.sortBy} type="select" label='Sort By'
+              <Select
+                value={allUsers.sortBy}
+                type="select"
+                label='Sort By'
                 changed={(e) => sortUsers(e)}
-                options={sortOption} />
+                options={sortOption}
+              />
             </div>
           </div>
-
         </div>
       </div>
-
-
       <div className="col-lg-7">
         <PaginationItem
           postPerPage={postPerPage}
@@ -141,4 +127,4 @@ const FilterData = () => {
   )
 }
 
-export default FilterData
+export default FilterUserData

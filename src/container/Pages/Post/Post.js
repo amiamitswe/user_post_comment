@@ -2,16 +2,13 @@ import React, { useCallback, useContext, useEffect } from 'react'
 import { store } from '../../../context/store'
 import { baseURL } from '../../../config.json'
 import Item from '../../../Component/Item/Item'
-
 import { LOAD_MORE, RESET_ERROR, RESET_LOADING, SAVE_POSTS, SET_ERROR, SET_LOADING } from '../../../context/Action/postActionTypes'
 import Spinner from '../../../UI/Spinner/Spinner'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons'
 
-
 const Comment = () => {
   const { posts, postDispatch } = useContext(store)
-  // console.log(posts);
 
   const fetchAllPosts = useCallback(async () => {
     try {
@@ -24,11 +21,9 @@ const Comment = () => {
       postDispatch({ type: SET_LOADING })
       if (response.ok) {
         const data = await response.json()
-        // setTimeout(() => {
         postDispatch({ type: SAVE_POSTS, payload: data })
         postDispatch({ type: RESET_ERROR })
         postDispatch({ type: RESET_LOADING })
-        // }, 500)
       }
       else {
         let errorResponse = response;
@@ -41,7 +36,6 @@ const Comment = () => {
       postDispatch({ type: SET_ERROR, payload: 'Something Wrong' })
       postDispatch({ type: RESET_LOADING })
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -51,10 +45,7 @@ const Comment = () => {
     }
   }, [posts.data.length, fetchAllPosts])
 
-
-  const loadMoreData = () => {
-    postDispatch({ type: LOAD_MORE, payload: 10 })
-  }
+  const loadMoreData = () => postDispatch({ type: LOAD_MORE, payload: 10 })
 
   return (
     <div className="row">
@@ -64,7 +55,13 @@ const Comment = () => {
           <>
             {posts.error ? <div className="alert alert-danger" role="alert">{posts.error}</div> :
               <>
-                {posts.data?.slice(0, posts.initialLoad).map(el => <Item postId={el.id} key={el.id} title={el.title} body={el.body} />)}
+                {posts.data?.slice(0, posts.initialLoad).map(el => (
+                  <Item
+                    postId={el.id}
+                    key={el.id}
+                    title={el.title}
+                    body={el.body}
+                  />))}
                 {posts?.initialLoad >= posts.data?.length ?
                   <div className="alert alert-info" role="alert">No More Data Available !!!</div> :
                   <button className='btn btn-md btn-primary mt-3' onClick={loadMoreData}>Show More<FontAwesomeIcon className='ml-3' icon={faEllipsisH} /></button>}

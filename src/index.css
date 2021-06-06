@@ -101,3 +101,7 @@ input[type="number"] {
 .hover:hover {
   cursor: pointer;
 }
+
+.color-gray {
+  color: #636363;
+}

@@ -1,4 +1,4 @@
-import React from 'react'
+import PropTypes from 'prop-types'
 
 const PaginationItem = ({ postPerPage, totalPosts, currentPage, paginate }) => {
   const pageNumber = []
@@ -11,13 +11,24 @@ const PaginationItem = ({ postPerPage, totalPosts, currentPage, paginate }) => {
     <nav>
       <ul className="pagination justify-content-end">
         {pageNumber.map(number => (
-          <li key={number} onClick={() => paginate(number)} className={number === currentPage ? 'page-link bg-info text-white' : 'page-link hover'}>{number}
+          <li
+            key={number}
+            onClick={() => paginate(number)}
+            className={number === currentPage ? 'page-link bg-info text-white' : 'page-link hover'}
+          >
+            {number}
           </li>
         ))}
-
       </ul>
     </nav>
   )
 }
 
 export default PaginationItem
+
+PaginationItem.propTypes = {
+  postPerPage: PropTypes.any.isRequired,
+  totalPosts: PropTypes.number.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  paginate: PropTypes.func.isRequired
+}

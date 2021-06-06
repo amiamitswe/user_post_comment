@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import './WornUser.css'
 
 const WornUser = ({ closePopover, deleteConfirm }) => (
@@ -10,5 +11,9 @@ const WornUser = ({ closePopover, deleteConfirm }) => (
   </div>
 )
 
-
 export default WornUser
+
+WornUser.propTypes = {
+  closePopover: PropTypes.func.isRequired,
+  deleteConfirm: PropTypes.func.isRequired,
+}

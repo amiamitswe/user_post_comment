@@ -8,27 +8,22 @@ import { baseURL } from '../../../../config.json'
 import Item from '../../../../Component/Item/Item'
 import PaginationItem from '../../../../Component/PaginationItem/PaginationItem'
 import Select from '../../../../Component/Select/Select'
+import { selectFilterItemForUserPost } from '../../../../Utility/library'
 
-const selectItem = [
-  { _id: 3, title: 3 },
-  { _id: 5, title: 5 },
-  { _id: 8, title: 8 },
-  { _id: 10, title: 10 },
-  { _id: 20, title: 20 },
-]
 
 const UserDetails = () => {
   const { userId } = useParams()
   const history = useHistory()
 
-  const [userDetails, setUserDetails] = useState({})
-  const [allPostsByUser, setAllPostsByUser] = useState([])
   const [loading, setLoading] = useState(false)
-  const [errorMessage, setErrorMessage] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [postPerPage, setPostPerPage] = useState(5)
+  const [userDetails, setUserDetails] = useState({})
   const [currentPosts, setCurrentPosts] = useState([])
+  const [errorMessage, setErrorMessage] = useState(false)
+  const [allPostsByUser, setAllPostsByUser] = useState([])
 
+  const selectItem = selectFilterItemForUserPost
 
   // go back page function
   const goBackPage = () => {
@@ -63,9 +58,7 @@ const UserDetails = () => {
         }
         setErrorMessage(false)
       }
-      else {
-        setErrorMessage(true)
-      }
+      else setErrorMessage(true)
       setLoading(false)
     }
     catch (error) {
@@ -74,10 +67,7 @@ const UserDetails = () => {
   }, [userId])
 
   // call fetch function
-  useEffect(() => {
-    fetchUserData()
-  }, [fetchUserData])
-
+  useEffect(() => fetchUserData(), [fetchUserData])
 
   useEffect(() => {
     const indexOfLastPost = currentPage * postPerPage
@@ -88,9 +78,7 @@ const UserDetails = () => {
   }, [postPerPage, currentPage, allPostsByUser])
 
   // set current page handler 
-  const setCurrentPageHandler = (page) => {
-    setCurrentPage(page)
-  }
+  const setCurrentPageHandler = (page) => setCurrentPage(page)
 
   return (
     <div className="row">
@@ -101,7 +89,6 @@ const UserDetails = () => {
             User Details
         </h3>
         <hr />
-
         {loading ? <Spinner /> :
           <>
             {errorMessage ? <PageNotFound text='User Data is not Available!!!' /> :
@@ -131,7 +118,6 @@ const UserDetails = () => {
                     </p>
                   </div> : null}
                 </div>
-
                 <div className='ml-4'>
                   <h3>Posts</h3>
                   {currentPosts.length > 0 ?
@@ -148,7 +134,6 @@ const UserDetails = () => {
                               options={selectItem} />
                           </div>
                         </div>
-
                         <div className="col-8">
                           <label className='d-block text-right'>Go Page</label>
                           <PaginationItem
@@ -162,14 +147,12 @@ const UserDetails = () => {
                     </>
                     :
                     <h2 className='text-center text-danger'>NO Posts Available !!!</h2>
-
                   }
                 </div>
               </>
             }
           </>
         }
-
       </div>
     </div>
   )

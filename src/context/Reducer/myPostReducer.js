@@ -35,7 +35,6 @@ const myPostReducer = (state, { payload, type }) => {
         error: null
       }
     case SAVE_NEW_POST:
-      console.log(payload);
       const oldPosts = [...state.data]
       oldPosts.unshift(payload)
       return {

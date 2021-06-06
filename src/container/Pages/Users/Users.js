@@ -1,20 +1,19 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
-
-import { store } from '../../../context/store';
-import { baseURL } from '../../../config.json'
-import { POST_PER_PAGE, RESET_LOADING, SAVE_USERS, SEARCH_DATA, SEARCH_STRING, SET_LOADING } from '../../../context/Action/usersAction';
-import Spinner from '../../../UI/Spinner/Spinner';
-import FilterData from '../../../Component/FilterData/FilterData';
 import { useHistory } from 'react-router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { store } from '../../../context/store';
+import { POST_PER_PAGE, RESET_LOADING, SAVE_USERS, SEARCH_DATA, SEARCH_STRING, SET_LOADING } from '../../../context/Action/usersAction';
+import Spinner from '../../../UI/Spinner/Spinner';
+import FilterUserData from './FilterUserData/FilterUserData';
+import { baseURL } from '../../../config.json'
 
 const Users = () => {
   const entriesRef = useRef()
   const history = useHistory()
+  const [pageData, setPageData] = useState({})
   const { allUsers, allUsersDispatch } = useContext(store)
   const searchString = allUsers.searchString
-  const [pageData, setPageData] = useState({})
 
   const fetchUsersData = useCallback(async () => {
     try {
@@ -35,7 +34,6 @@ const Users = () => {
       else {
         let errorResponse = response;
         console.log(errorResponse);
-        // myPostDispatch({ type: SET_ERROR, payload: 'Error ' + errorResponse.status })
         allUsersDispatch({ type: RESET_LOADING })
       }
     }
@@ -47,15 +45,11 @@ const Users = () => {
   }, [])
 
   useEffect(() => {
-    if (allUsers.data.length === 0) {
-      fetchUsersData()
-    }
-    else {
-      setPageData(allUsers.filteredData)
-    }
+    if (allUsers.data.length === 0) fetchUsersData()
+    else setPageData(allUsers.filteredData)
   }, [allUsers.data.length, fetchUsersData, allUsers.filteredData])
 
-
+  // search handler
   const searchHandler = () => {
     const userData = allUsers.data
     allUsersDispatch({ type: SEARCH_STRING, payload: entriesRef.current.value.trim().toLowerCase() })
@@ -65,18 +59,14 @@ const Users = () => {
       const data = userData.filter(el => (
         el.name.toLowerCase().match(searchString) || el.email.toLowerCase().match(searchString) || el.website.toLowerCase().match(searchString)
       ))
-
       allUsersDispatch({ type: SEARCH_DATA, payload: data })
     }
   }
 
   useEffect(() => {
-    if (searchString.length > 0) {
-      searchHandler()
-    }
+    if (searchString.length > 0) searchHandler()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
 
   return (
     <>
@@ -89,7 +79,6 @@ const Users = () => {
             </div>
           </div>
         </div>
-
         <div className="col-12">
           {allUsers.isLoading ? <Spinner /> :
             <>
@@ -109,9 +98,9 @@ const Users = () => {
                         {pageData.length > 0 &&
                           pageData?.map((user) => (
                             <tr key={user.id}>
-                              <td><span style={{ color: "#636363" }}>{user.name}</span></td>
-                              <td><span style={{ color: "#636363" }}>{user.email}</span></td>
-                              <td><span style={{ color: "#636363" }}>{user.website}</span></td>
+                              <td><span className='color-gray'>{user.name}</span></td>
+                              <td><span className='color-gray'>{user.email}</span></td>
+                              <td><span className='color-gray'>{user.website}</span></td>
                               <td>
                                 <div className="actionButton">
                                   <button onClick={() => history.push(`/allUsers/${user.id}`)}>
@@ -124,17 +113,15 @@ const Users = () => {
                       </tbody>
                     </table>
                   </div>
-
                 </div>
               </div>
               <div className="row align-items-center">
-                <FilterData />
+                <FilterUserData />
               </div>
             </>
           }
         </div>
       </div>
-
     </>
   )
 }

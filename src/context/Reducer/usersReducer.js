@@ -1,6 +1,4 @@
-// eslint-disable-next-line no-unused-vars
 import { SAVE_USERS, SORT_USER_SAVE, POST_PER_PAGE, SET_LOADING, RESET_LOADING, POST_SORT_BY, CURRENT_PAGE, SEARCH_DATA, SEARCH_STRING } from "../Action/usersAction";
-
 
 const usersReducer = (state, { payload, type }) => {
   switch (type) {

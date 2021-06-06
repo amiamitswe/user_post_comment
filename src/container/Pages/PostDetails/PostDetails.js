@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router'
 import { baseURL } from '../../../config.json'
 import Spinner from '../../../UI/Spinner/Spinner'
-import Comment from './Comment/Comment'
+import Comment from '../../../Component/Comment/Comment'
 import PageNotFound from '../PageNotFound/PageNotFound'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
@@ -48,9 +48,7 @@ const PostDetails = () => {
         }
         setErrorMessage(false)
       }
-      else {
-        setErrorMessage(true)
-      }
+      else setErrorMessage(true)
       setLoading(false)
     }
     catch (error) {
@@ -59,19 +57,20 @@ const PostDetails = () => {
   }, [postId])
 
   // call fetch function
-  useEffect(() => {
-    fetchPostData()
-  }, [fetchPostData])
+  useEffect(() => fetchPostData(), [fetchPostData])
 
   return (
     <div className="row">
       <div className="col-12">
         <h3 className=' d-flex'>
-          <button onClick={goBackPage} className='btn btn-sm btn-info mr-4'><FontAwesomeIcon className='mr-2' icon={faArrowLeft} />Go Back</button>
+          <button
+            onClick={goBackPage}
+            className='btn btn-sm btn-info mr-4'>
+            <FontAwesomeIcon className='mr-2' icon={faArrowLeft} />Go Back
+          </button>
           Post Details
         </h3>
         <hr />
-
         {loading ? <Spinner /> :
           <>
             {errorMessage ? <PageNotFound text='Post Data is not Available!!!' /> :
@@ -81,11 +80,16 @@ const PostDetails = () => {
                   <h4>{postDetails?.title}</h4>
                   <p>{postDetails?.body}</p>
                 </div>
-
                 <div className='ml-4'>
                   <h3>Comments</h3>
                   {allComments.length > 0 ?
-                    allComments.map(el => <Comment key={el.id} name={el.name} email={el.email} body={el.body} />) :
+                    allComments.map(el => (
+                      <Comment
+                        key={el.id}
+                        name={el.name}
+                        email={el.email}
+                        body={el.body}
+                      />)) :
                     <h2 className='text-center text-danger'>NO Comments Available !!!</h2>
                   }
                 </div>
@@ -93,7 +97,6 @@ const PostDetails = () => {
             }
           </>
         }
-
       </div>
     </div>
   )

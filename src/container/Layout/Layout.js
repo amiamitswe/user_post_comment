@@ -6,7 +6,6 @@ import routes from '../../Routes/Routes'
 import classes from './Layout.module.css'
 
 const Layout = () => {
-
   const RenderRoute = route => {
     document.title = route.title || 'User Post Comment App'
     return (
@@ -24,7 +23,6 @@ const Layout = () => {
             <div className="row">
               <div className="col-12">
                 <div className="form__wrapper p-3">
-
                   <Switch>
                     <Redirect exact from="/" to="/post" />
 
@@ -32,7 +30,6 @@ const Layout = () => {
                       <RenderRoute key={index} {...route} />
                     ))}
                   </Switch>
-
                 </div>
               </div>
             </div>
